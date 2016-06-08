@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Timesheeter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href='https://fonts.googleapis.com/css?family=PT+Mono' rel='stylesheet' type='text/css'>
+  <style>
+    *, *:before, *:after{
+      box-sizing: border-box;
+    }
+
+    html, body{
+      margin: 0;
+      padding: 0;
+    }
+
+    body{
+      width: 90%;
+      max-width: 20rem;
+      margin: auto;
+      font-family: 'PT Mono', monospace;
+      color: #222;
+      line-height: 1.6;
+    }
+
+    h1{
+      margin-top: 2rem;
+      font-size: 100%;
+      color: blue;
+      text-transform: uppercase;
+      letter-spacing: 5px;
+    }
+
+    form{
+      width: 100%;
+      margin-top: 2rem;
+    }
+
+    .control{
+      margin-bottom: 1rem;
+    }
+
+    label{
+      display: block;
+      margin-bottom: .275rem;
+      font-size: .675rem;
+      text-transform: uppercase;
+      letter-spacing: 5px;
+    }
+
+    input{
+      width: 100%;
+      padding: 1rem;
+      border: 1px solid #222;
+      font-family: inherit;
+      font-size: 100%;
+    }
+
+    button[type=submit]{
+      width: 100%;
+      margin-top: 2rem;
+      padding: 1rem;
+      background: blue;
+      border: 0;
+      color: white;
+      font-family: inherit;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Timesheeter</h1>
+  <form>
+    <div class="control">
+      <label for="time-in-1">Time in</label>
+      <input type="time" class="time" id="time-in-1">
+      <span class="rounded" data-for="time-in-1">
+    </div>
+    <div class="control">
+      <label for="time-out-1">Time out</label>
+      <input type="time" class="time" id="time-out-1">
+        <span class="rounded" data-for="time-out-1">
+    </div>
+    <div class="control">
+      <label for="time-in-2">Time in</label>
+      <input type="time" class="time" id="time-in-2">
+        <span class="rounded" data-for="time-in-2">
+    </div>
+    <div class="control">
+      <label for="time-out-2">Time out</label>
+      <input type="time" class="time" id="time-out-2">
+      <span class="rounded" data-for="time-out-2">
+    </div>
+    <button type="submit">Calculate</button>
+  </form>
+  <p id="total"></p>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-rc1/jquery.min.js"></script>
+  <script>
+    $(document).ready(function(){
+      $('form').submit(function(){
+        var time_inputs, times, rounded_time;
+
+        time_inputs = $('.time');
+        times = [];
+
+        $.each(time_inputs, function(){
+          times.push(round_time($(this).val()));
+        })
+
+        rounded_time = calculate_times(times);
+
+        $('#total').text(rounded_time);
+
+        return false;
+      })
+    });
+
+    var round_time = function(in_time){
+      var now, mins, time_parts;
+
+      now = new Date();
+      time_parts = in_time.split(':');
+
+      now.setHours(time_parts[0]);
+      now.setMinutes(time_parts[1]);
+
+      mins = now.getMinutes();
+
+
+      if (mins <= 7){
+        now.setMinutes(0);
+      }
+      else if (mins >= 8 && mins <= 22 ){
+        now.setMinutes(15);
+      }
+      else if (mins >= 23 && mins <= 37){
+        now.setMinutes(30)
+      }
+      else if (mins >= 38 && mins <= 52){
+        now.setMinutes(45)
+      }
+      else if (mins >= 53){
+        now.setMinutes(0);
+        now.setHours(now.getHours() + 1)
+      }
+
+      return now;
+    }
+
+    var calculate_times = function(in_times){
+      var total_time, day, lunch, total_hours, total_minutes;
+
+      day = in_times[3].getTime() - in_times[0].getTime();
+      day /= 1000;
+
+      lunch = in_times[2].getTime() - in_times[1].getTime();
+      lunch /= 1000;
+
+      total_time = (day - lunch) / 3600;
+
+      return total_time;
+    }
+  </script>
+
+</body>
+</html>

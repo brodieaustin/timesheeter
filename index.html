@@ -32,6 +32,24 @@
       letter-spacing: 5px;
     }
 
+    hr{
+      margin: 2rem;
+      border-top: 1px solid #222;
+      border-bottom: 0;
+    }
+
+    h2{
+      font-size: 80%;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+    }
+
+    ul{
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
     form{
       width: 100%;
       margin-top: 2rem;
@@ -97,6 +115,14 @@
     <button type="submit">Calculate</button>
   </form>
   <p id="total"></p>
+  <hr>
+  <h2>Rounding</h2>
+  <ul>
+    <li>:53 &ndash; :07 = :00</li>
+    <li>:08 &ndash; :22 = :15</li>
+    <li>:23 &ndash; :37 = :30</li>
+    <li>:38 &ndash; :52 = :45</li>
+  </ul>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-rc1/jquery.min.js"></script>
   <script>
     $(document).ready(function(){

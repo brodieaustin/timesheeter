@@ -136,6 +136,8 @@
           times.push(round_time($(this).val()));
         })
 
+        console.log(times)
+
         rounded_time = calculate_times(times);
 
         $('#total').text(rounded_time);
@@ -179,11 +181,19 @@
     var calculate_times = function(in_times){
       var total_time, day, lunch, total_hours, total_minutes;
 
-      day = in_times[3].getTime() - in_times[0].getTime();
-      day /= 1000;
+      if (in_times[2] == 'Invalid Date'){
+        day = in_times[1].getTime() - in_times[0].getTime();
+        day /= 1000;
+        
+        lunch = 0;
+      }
+      else{
+        day = in_times[3].getTime() - in_times[0].getTime();
+        day /= 1000;
 
-      lunch = in_times[2].getTime() - in_times[1].getTime();
-      lunch /= 1000;
+        lunch = in_times[2].getTime() - in_times[1].getTime();
+        lunch /= 1000;
+      }
 
       total_time = (day - lunch) / 3600;
 
